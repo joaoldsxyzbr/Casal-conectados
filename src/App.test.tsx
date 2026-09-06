@@ -21,11 +21,22 @@ describe('App', () => {
 
     expect(screen.getByText('João')).toBeInTheDocument()
     expect(screen.getByText('Amor')).toBeInTheDocument()
+    expect(screen.getAllByText('Atualizado agora')).toHaveLength(2)
   })
 
   it('renderiza o mapa como base da tela principal', () => {
     render(<App />)
 
     expect(screen.getByTestId('map-view')).toBeInTheDocument()
+  })
+
+  it('oferece navegação inferior entre mapa e pessoas', () => {
+    render(<App />)
+
+    expect(screen.getByRole('button', { name: 'Mapa' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    expect(screen.getByRole('button', { name: 'Pessoas' })).toBeInTheDocument()
   })
 })
