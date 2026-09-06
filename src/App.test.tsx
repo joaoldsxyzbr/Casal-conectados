@@ -11,4 +11,11 @@ describe('App', () => {
       screen.getByRole('heading', { name: 'Casal Conectados', level: 1 }),
     ).toBeInTheDocument()
   })
+
+  it('mostra os dois perfis simulados do casal', () => {
+    render(<App />)
+
+    expect(screen.getByText('João')).toBeInTheDocument()
+    expect(screen.getByText('Amor')).toBeInTheDocument()
+  })
 })
