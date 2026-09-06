@@ -32,11 +32,107 @@ button {
   width: 100%;
   min-height: 100dvh;
   overflow: hidden;
-  background: #f7f3ff;
+  background: #e9e5ef;
+}
+
+.map-view {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #e9e5ef;
 }
 
 .app-title {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 16px);
+  left: 16px;
+  z-index: 500;
   margin: 0;
-  padding: 24px;
-  font-size: 1.25rem;
+  padding: 10px 14px;
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 8px 30px rgb(49 38 67 / 14%);
+  font-size: 1rem;
+  line-height: 1.2;
+  backdrop-filter: blur(14px);
+}
+
+.profile-preview {
+  position: absolute;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 28px);
+  z-index: 500;
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  border-radius: 18px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 10px 36px rgb(49 38 67 / 18%);
+  transform: translateX(-50%);
+  backdrop-filter: blur(14px);
+}
+
+.profile-preview li {
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #f5f1fa;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.person-marker-wrapper {
+  background: transparent;
+  border: 0;
+}
+
+.person-marker {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto;
+  place-items: center;
+  border: 4px solid #fff;
+  border-radius: 999px;
+  background: #6f4fd8;
+  box-shadow: 0 6px 18px rgb(49 38 67 / 28%);
+  color: #fff;
+  font-weight: 800;
+}
+
+.person-label {
+  width: max-content;
+  max-width: 96px;
+  margin: 4px auto 0;
+  padding: 4px 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 3px 10px rgb(49 38 67 / 18%);
+  color: #241f2e;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map-fallback {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 72px);
+  left: 50%;
+  z-index: 600;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgb(36 31 46 / 84%);
+  color: #fff;
+  font-size: 0.75rem;
+  transform: translateX(-50%);
 }
