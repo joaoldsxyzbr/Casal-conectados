@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/front-v0.1
   pull_request:
     branches:
       - main
