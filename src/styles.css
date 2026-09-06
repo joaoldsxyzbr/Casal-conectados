@@ -1,7 +1,7 @@
 :root {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #241f2e;
-  background: #f7f3ff;
+  background: #e9e5ef;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -27,10 +27,15 @@ button {
   font: inherit;
 }
 
+button:focus-visible {
+  outline: 3px solid rgb(111 79 216 / 32%);
+  outline-offset: 2px;
+}
+
 .app-shell {
   position: relative;
   width: 100%;
-  min-height: 100dvh;
+  height: 100dvh;
   overflow: hidden;
   background: #e9e5ef;
 }
@@ -47,45 +52,176 @@ button {
   background: #e9e5ef;
 }
 
-.app-title {
+.app-header {
   position: absolute;
-  top: calc(env(safe-area-inset-top) + 16px);
-  left: 16px;
-  z-index: 500;
-  margin: 0;
-  padding: 10px 14px;
+  top: calc(env(safe-area-inset-top) + 12px);
+  left: 50%;
+  z-index: 700;
+  display: flex;
+  width: min(calc(100% - 24px), 440px);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 10px 10px 15px;
   border: 1px solid rgb(255 255 255 / 70%);
-  border-radius: 16px;
+  border-radius: 18px;
   background: rgb(255 255 255 / 92%);
-  box-shadow: 0 8px 30px rgb(49 38 67 / 14%);
-  font-size: 1rem;
-  line-height: 1.2;
-  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgb(49 38 67 / 14%);
+  transform: translateX(-50%);
+  backdrop-filter: blur(16px);
 }
 
-.profile-preview {
+.app-header h1 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.icon-button {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: 12px;
+  background: #f2eef8;
+  color: #51485f;
+  cursor: pointer;
+}
+
+.people-sheet {
   position: absolute;
-  left: 50%;
-  bottom: calc(env(safe-area-inset-bottom) + 28px);
-  z-index: 500;
-  display: flex;
+  right: 12px;
+  bottom: calc(env(safe-area-inset-bottom) + 88px);
+  left: 12px;
+  z-index: 700;
+  width: min(calc(100% - 24px), 440px);
+  margin-inline: auto;
+  padding: 8px 12px 12px;
+  border: 1px solid rgb(255 255 255 / 72%);
+  border-radius: 24px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 14px 38px rgb(49 38 67 / 18%);
+  backdrop-filter: blur(18px);
+}
+
+.people-sheet__handle {
+  width: 34px;
+  height: 4px;
+  margin: 1px auto 8px;
+  border-radius: 999px;
+  background: #d7d0df;
+}
+
+.people-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin: 0;
-  padding: 8px;
+  padding: 0;
   list-style: none;
-  border-radius: 18px;
-  background: rgb(255 255 255 / 94%);
-  box-shadow: 0 10px 36px rgb(49 38 67 / 18%);
-  transform: translateX(-50%);
-  backdrop-filter: blur(14px);
 }
 
-.profile-preview li {
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: #f5f1fa;
+.person-card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+  padding: 8px;
+  border-radius: 16px;
+  background: #f7f4fa;
+}
+
+.person-avatar {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: #6f4fd8;
+  box-shadow: 0 4px 12px rgb(49 38 67 / 12%);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.person-copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.person-copy strong {
+  overflow: hidden;
   font-size: 0.875rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.person-copy small {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 5px;
+  overflow: hidden;
+  color: #756c80;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: #49a66d;
+}
+
+.bottom-nav {
+  position: absolute;
+  right: 12px;
+  bottom: calc(env(safe-area-inset-bottom) + 10px);
+  left: 12px;
+  z-index: 700;
+  display: grid;
+  width: min(calc(100% - 24px), 440px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin-inline: auto;
+  padding: 5px;
+  border: 1px solid rgb(255 255 255 / 72%);
+  border-radius: 20px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 12px 34px rgb(49 38 67 / 18%);
+  backdrop-filter: blur(18px);
+}
+
+.bottom-nav__item {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 15px;
+  background: transparent;
+  color: #776f80;
+  cursor: pointer;
+  font-size: 0.76rem;
   font-weight: 700;
+}
+
+.bottom-nav__item--active {
+  background: #eee8ff;
+  color: #6745d1;
 }
 
 .person-marker-wrapper {
@@ -126,13 +262,29 @@ button {
 
 .map-fallback {
   position: absolute;
-  top: calc(env(safe-area-inset-top) + 72px);
+  top: calc(env(safe-area-inset-top) + 78px);
   left: 50%;
-  z-index: 600;
+  z-index: 720;
   padding: 8px 12px;
   border-radius: 999px;
   background: rgb(36 31 46 / 84%);
   color: #fff;
   font-size: 0.75rem;
   transform: translateX(-50%);
+}
+
+@media (max-width: 360px) {
+  .people-list {
+    gap: 6px;
+  }
+
+  .person-card {
+    gap: 6px;
+    padding: 7px;
+  }
+
+  .person-avatar {
+    width: 34px;
+    height: 34px;
+  }
 }
