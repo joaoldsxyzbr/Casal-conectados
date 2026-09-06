@@ -4,13 +4,12 @@ on:
   push:
     branches:
       - main
-      - feature/front-v0.1
   pull_request:
     branches:
       - main
 
 jobs:
-  test:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,3 +18,6 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm test -- --run
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm audit --audit-level=high
