@@ -7,13 +7,14 @@ function readJson(path: string) {
 }
 
 describe('configuração de deploy', () => {
-  it('publica o build Vite em dist com Wrangler versionado', () => {
+  it('faz o Wrangler gerar e publicar o build Vite automaticamente', () => {
     const wrangler = readJson('wrangler.jsonc')
     const pkg = readJson('package.json')
 
     expect(wrangler).not.toBeNull()
+    expect(wrangler?.build?.command).toBe('npm run build')
     expect(wrangler?.assets?.directory).toBe('./dist')
-    expect(pkg?.scripts?.deploy).toBe('npm run build && wrangler deploy')
+    expect(pkg?.scripts?.deploy).toBe('wrangler deploy')
     expect(pkg?.devDependencies?.wrangler).toBe('4.129.0')
   })
 })
