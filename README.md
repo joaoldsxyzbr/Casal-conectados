@@ -4,9 +4,9 @@ Aplicativo de casal em desenvolvimento, começando por uma experiência mobile d
 
 ## Estado atual
 
-**Front v0.2**
+**Front v0.3**
 
-A versão atual continua exclusivamente visual e usa dados simulados. O objetivo desta etapa é validar a navegação principal e a experiência das telas antes de adicionar autenticação, backend ou localização real.
+A versão atual continua exclusivamente visual e usa dados simulados. O objetivo desta etapa é validar o fluxo de detalhe individual e ações rápidas antes de adicionar autenticação, backend ou localização real.
 
 ### Implementado
 
@@ -18,23 +18,32 @@ A versão atual continua exclusivamente visual e usa dados simulados. O objetivo
 - painel inferior flutuante no mapa;
 - navegação inferior funcional entre `Mapa` e `Pessoas`;
 - tela `Pessoas` com os dois membros do círculo e indicação de localização ativa;
+- detalhe individual de João e Amor ao tocar no card da pessoa;
+- localização simulada `Biguaçu, SC` no detalhe;
+- cinco ações rápidas: `Ver no mapa`, `Rota`, `Mensagem`, `Ligar` e `Atualizar`;
+- `Ver no mapa` retorna ao mapa e centraliza a posição mockada da pessoa selecionada;
+- `Rota`, `Mensagem` e `Ligar` exibem feedback local sem integração externa;
+- `Atualizar` simula solicitação e conclusão de atualização de localização;
+- navegação inferior oculta durante o detalhe e retorno para `Pessoas` pelo botão voltar;
 - estado visual correto da aba ativa;
 - layout mobile-first com suporte a safe areas de Android/iOS;
 - fallback visual se os tiles do mapa falharem;
 - CI com testes, TypeScript, build e auditoria de dependências;
 - configuração de deploy via Cloudflare Workers Static Assets.
 
-### Deliberadamente fora da v0.2
+### Deliberadamente fora da v0.3
 
 - login e cadastro;
 - pareamento real;
 - backend e banco de dados;
 - GPS real;
 - rastreamento em segundo plano;
+- bateria e velocidade reais;
 - histórico de localização;
 - geofencing;
 - notificações;
-- detalhes/edição de perfil;
+- abertura de Google Maps, Apple Maps, mensageiros ou chamadas reais;
+- edição de perfil;
 - publicação na Play Store ou App Store.
 
 ## Stack
@@ -86,9 +95,9 @@ O código da aplicação precisa estar presente na branch de produção antes do
 
 ## Estrutura principal
 
-- `src/components/map` — mapa e marcadores;
+- `src/components/map` — mapa, marcadores e controlador de foco da pessoa selecionada;
 - `src/components/header` — cabeçalho flutuante;
-- `src/components/people` — painel do mapa e tela Pessoas;
+- `src/components/people` — painel do mapa, tela Pessoas e detalhe individual;
 - `src/components/navigation` — navegação inferior funcional;
 - `src/data` — dados simulados;
 - `src/types` — contratos compartilhados.
@@ -98,3 +107,5 @@ O código da aplicação precisa estar presente na branch de produção antes do
 - Spec inicial: `docs/superpowers/specs/2026-09-06-front-v0.1-design.md`
 - Plano inicial: `docs/superpowers/plans/2026-09-06-front-v0.1.md`
 - Evolução v0.2: mudança bounded aprovada em chat, focada apenas na aba `Pessoas`.
+- Spec v0.3: `docs/superpowers/specs/2026-09-07-person-detail-v0.3-design.md`
+- Plano v0.3: `docs/superpowers/plans/2026-09-07-person-detail-v0.3.md`
