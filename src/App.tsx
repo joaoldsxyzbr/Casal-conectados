@@ -25,17 +25,17 @@ export default function App() {
 
   return (
     <main className="app-shell">
-      {activeTab === 'map' ? (
-        <>
-          <MapView focusPosition={mapFocusPosition} />
-          <PeopleSheet people={mockPeople} />
-        </>
-      ) : selectedPerson ? (
+      {selectedPerson ? (
         <PersonDetailPage
           person={selectedPerson}
           onBack={() => setSelectedPerson(null)}
           onViewOnMap={handleViewOnMap}
         />
+      ) : activeTab === 'map' ? (
+        <>
+          <MapView focusPosition={mapFocusPosition} />
+          <PeopleSheet people={mockPeople} onSelectPerson={setSelectedPerson} />
+        </>
       ) : (
         <PeoplePage people={mockPeople} onSelectPerson={setSelectedPerson} />
       )}

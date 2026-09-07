@@ -127,12 +127,17 @@ button:focus-visible {
 
 .person-card {
   display: flex;
+  width: 100%;
   min-width: 0;
   align-items: center;
   gap: 9px;
   padding: 8px;
+  border: 0;
   border-radius: 16px;
   background: #f7f4fa;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
 }
 
 .person-avatar {

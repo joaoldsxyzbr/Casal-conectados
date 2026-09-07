@@ -55,7 +55,7 @@ export function PersonDetailPage({
         <button
           className="person-detail__back"
           type="button"
-          aria-label="Voltar para Pessoas"
+          aria-label="Voltar"
           onClick={onBack}
         >
           Voltar

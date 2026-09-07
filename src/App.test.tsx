@@ -37,6 +37,25 @@ describe('App', () => {
     expect(screen.getByTestId('map-view')).toBeInTheDocument()
   })
 
+  it('abre o detalhe ao tocar uma pessoa no painel do mapa e volta ao mapa', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: /Abrir João/i }))
+
+    expect(screen.getByRole('heading', { name: 'João', level: 2 })).toBeInTheDocument()
+    expect(
+      screen.queryByRole('navigation', { name: 'Navegação principal' }),
+    ).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Voltar' }))
+
+    expect(screen.getByTestId('map-view')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Mapa' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+  })
+
   it('troca entre mapa e pessoas pela navegação inferior', () => {
     render(<App />)
 
@@ -69,7 +88,7 @@ describe('App', () => {
       screen.queryByRole('navigation', { name: 'Navegação principal' }),
     ).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Voltar para Pessoas' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Voltar' }))
 
     expect(screen.getByRole('heading', { name: 'Pessoas', level: 2 })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Pessoas' })).toHaveAttribute(
