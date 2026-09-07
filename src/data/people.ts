@@ -7,6 +7,7 @@ export const mockPeople: PersonLocation[] = [
     initials: 'J',
     status: 'Atualizado agora',
     position: [-27.4942, -48.6556],
+    locationLabel: 'Biguaçu, SC',
   },
   {
     id: 'partner',
@@ -14,5 +15,6 @@ export const mockPeople: PersonLocation[] = [
     initials: 'A',
     status: 'Atualizado agora',
     position: [-27.4898, -48.6518],
+    locationLabel: 'Biguaçu, SC',
   },
 ]
