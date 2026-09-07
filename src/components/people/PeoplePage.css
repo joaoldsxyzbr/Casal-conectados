@@ -1,0 +1,128 @@
+.people-page {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  overflow-y: auto;
+  padding: calc(env(safe-area-inset-top) + 88px) 12px calc(env(safe-area-inset-bottom) + 92px);
+  background: linear-gradient(180deg, #f8f5fb 0%, #eee9f4 100%);
+}
+
+.people-page__content {
+  width: min(100%, 440px);
+  margin: 0 auto;
+}
+
+.people-page__intro {
+  padding: 12px 6px 18px;
+}
+
+.people-page__intro p,
+.people-page__intro h2,
+.people-page__intro span {
+  margin: 0;
+}
+
+.people-page__intro p {
+  margin-bottom: 5px;
+  color: #6f4fd8;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.people-page__intro h2 {
+  color: #241f2e;
+  font-size: clamp(1.65rem, 8vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.people-page__intro span {
+  display: block;
+  margin-top: 7px;
+  color: #756c80;
+  font-size: 0.82rem;
+}
+
+.people-page__list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.people-page__card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 86px;
+  padding: 14px;
+  border: 1px solid rgb(255 255 255 / 80%);
+  border-radius: 22px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 10px 26px rgb(49 38 67 / 10%);
+}
+
+.people-page__avatar {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  grid-row: span 2;
+  place-items: center;
+  border: 3px solid #fff;
+  border-radius: 999px;
+  background: #6f4fd8;
+  box-shadow: 0 5px 14px rgb(49 38 67 / 16%);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.people-page__person {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.people-page__person strong {
+  overflow: hidden;
+  color: #241f2e;
+  font-size: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.people-page__person small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #756c80;
+  font-size: 0.75rem;
+}
+
+.people-page__location {
+  width: max-content;
+  max-width: 100%;
+  margin-top: 1px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #f0ebff;
+  color: #6745d1;
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+@media (max-width: 360px) {
+  .people-page__card {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .people-page__avatar {
+    width: 48px;
+    height: 48px;
+  }
+}

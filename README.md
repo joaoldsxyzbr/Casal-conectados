@@ -4,9 +4,9 @@ Aplicativo de casal em desenvolvimento, começando por uma experiência mobile d
 
 ## Estado atual
 
-**Front v0.1**
+**Front v0.2**
 
-A versão atual é exclusivamente visual e usa dados simulados. O objetivo desta etapa é validar a experiência principal antes de adicionar autenticação, backend ou localização real.
+A versão atual continua exclusivamente visual e usa dados simulados. O objetivo desta etapa é validar a navegação principal e a experiência das telas antes de adicionar autenticação, backend ou localização real.
 
 ### Implementado
 
@@ -15,14 +15,16 @@ A versão atual é exclusivamente visual e usa dados simulados. O objetivo desta
 - dois perfis simulados: João e Amor;
 - marcadores simulados no mapa;
 - status `Atualizado agora` para os dois perfis;
-- painel inferior flutuante;
-- navegação inferior com `Mapa` e `Pessoas`;
+- painel inferior flutuante no mapa;
+- navegação inferior funcional entre `Mapa` e `Pessoas`;
+- tela `Pessoas` com os dois membros do círculo e indicação de localização ativa;
+- estado visual correto da aba ativa;
 - layout mobile-first com suporte a safe areas de Android/iOS;
 - fallback visual se os tiles do mapa falharem;
 - CI com testes, TypeScript, build e auditoria de dependências;
 - configuração de deploy via Cloudflare Workers Static Assets.
 
-### Deliberadamente fora da v0.1
+### Deliberadamente fora da v0.2
 
 - login e cadastro;
 - pareamento real;
@@ -32,6 +34,7 @@ A versão atual é exclusivamente visual e usa dados simulados. O objetivo desta
 - histórico de localização;
 - geofencing;
 - notificações;
+- detalhes/edição de perfil;
 - publicação na Play Store ou App Store.
 
 ## Stack
@@ -85,12 +88,13 @@ O código da aplicação precisa estar presente na branch de produção antes do
 
 - `src/components/map` — mapa e marcadores;
 - `src/components/header` — cabeçalho flutuante;
-- `src/components/people` — painel dos dois perfis;
-- `src/components/navigation` — navegação inferior;
+- `src/components/people` — painel do mapa e tela Pessoas;
+- `src/components/navigation` — navegação inferior funcional;
 - `src/data` — dados simulados;
 - `src/types` — contratos compartilhados.
 
 ## Documentação de produto
 
-- Spec: `docs/superpowers/specs/2026-09-06-front-v0.1-design.md`
-- Plano: `docs/superpowers/plans/2026-09-06-front-v0.1.md`
+- Spec inicial: `docs/superpowers/specs/2026-09-06-front-v0.1-design.md`
+- Plano inicial: `docs/superpowers/plans/2026-09-06-front-v0.1.md`
+- Evolução v0.2: mudança bounded aprovada em chat, focada apenas na aba `Pessoas`.
