@@ -1,4 +1,5 @@
 import type { PersonLocation } from '../../types/person'
+import './PeoplePage.css'
 
 type PeoplePageProps = {
   people: PersonLocation[]
