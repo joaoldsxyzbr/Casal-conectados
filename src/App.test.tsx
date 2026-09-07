@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import App from './App'
 
@@ -30,13 +30,24 @@ describe('App', () => {
     expect(screen.getByTestId('map-view')).toBeInTheDocument()
   })
 
-  it('oferece navegação inferior entre mapa e pessoas', () => {
+  it('troca entre mapa e pessoas pela navegação inferior', () => {
     render(<App />)
 
-    expect(screen.getByRole('button', { name: 'Mapa' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    )
-    expect(screen.getByRole('button', { name: 'Pessoas' })).toBeInTheDocument()
+    const mapButton = screen.getByRole('button', { name: 'Mapa' })
+    const peopleButton = screen.getByRole('button', { name: 'Pessoas' })
+
+    expect(mapButton).toHaveAttribute('aria-current', 'page')
+
+    fireEvent.click(peopleButton)
+
+    expect(screen.queryByTestId('map-view')).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Pessoas', level: 2 })).toBeInTheDocument()
+    expect(peopleButton).toHaveAttribute('aria-current', 'page')
+    expect(mapButton).not.toHaveAttribute('aria-current')
+
+    fireEvent.click(mapButton)
+
+    expect(screen.getByTestId('map-view')).toBeInTheDocument()
+    expect(mapButton).toHaveAttribute('aria-current', 'page')
   })
 })
