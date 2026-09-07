@@ -25,6 +25,7 @@ export default function App() {
         <PersonDetailPage
           person={selectedPerson}
           onBack={() => setSelectedPerson(null)}
+          onViewOnMap={() => undefined}
         />
       ) : (
         <PeoplePage people={mockPeople} onSelectPerson={setSelectedPerson} />
