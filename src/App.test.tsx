@@ -1,9 +1,16 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import App from './App'
+import { mockPeople } from './data/people'
 
 vi.mock('./components/map/MapView', () => ({
-  MapView: () => <div data-testid="map-view" aria-label="Mapa do casal" />,
+  MapView: ({ focusPosition }: { focusPosition?: [number, number] | null }) => (
+    <div
+      data-testid="map-view"
+      data-focus={focusPosition?.join(',') ?? ''}
+      aria-label="Mapa do casal"
+    />
+  ),
 }))
 
 describe('App', () => {
@@ -66,6 +73,23 @@ describe('App', () => {
 
     expect(screen.getByRole('heading', { name: 'Pessoas', level: 2 })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Pessoas' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+  })
+
+  it('volta ao mapa focando a pessoa pelo detalhe', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Pessoas' }))
+    fireEvent.click(screen.getByRole('button', { name: /Abrir Amor/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Ver no mapa' }))
+
+    expect(screen.getByTestId('map-view')).toHaveAttribute(
+      'data-focus',
+      mockPeople[1].position.join(','),
+    )
+    expect(screen.getByRole('button', { name: 'Mapa' })).toHaveAttribute(
       'aria-current',
       'page',
     )
