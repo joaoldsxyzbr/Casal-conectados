@@ -47,7 +47,7 @@ describe('App', () => {
       screen.queryByRole('navigation', { name: 'Navegação principal' }),
     ).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Voltar para Pessoas' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Voltar' }))
 
     expect(screen.getByTestId('map-view')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Mapa' })).toHaveAttribute(
@@ -88,7 +88,7 @@ describe('App', () => {
       screen.queryByRole('navigation', { name: 'Navegação principal' }),
     ).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Voltar para Pessoas' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Voltar' }))
 
     expect(screen.getByRole('heading', { name: 'Pessoas', level: 2 })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Pessoas' })).toHaveAttribute(
