@@ -1,11 +1,16 @@
 import { useState } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import { mockPeople } from '../../data/people'
+import { MapFocusController } from './MapFocusController'
 import { PersonMarker } from './PersonMarker'
 
 const MAP_CENTER: [number, number] = [-27.492, -48.6537]
 
-export function MapView() {
+type MapViewProps = {
+  focusPosition?: [number, number] | null
+}
+
+export function MapView({ focusPosition }: MapViewProps) {
   const [mapFailed, setMapFailed] = useState(false)
 
   return (
@@ -16,6 +21,7 @@ export function MapView() {
         zoomControl={false}
         scrollWheelZoom
       >
+        <MapFocusController position={focusPosition} />
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
