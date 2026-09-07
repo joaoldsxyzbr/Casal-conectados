@@ -4,4 +4,5 @@ export type PersonLocation = {
   initials: string
   status: string
   position: [number, number]
+  locationLabel: string
 }
