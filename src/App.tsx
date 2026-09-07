@@ -13,19 +13,28 @@ type AppTab = 'map' | 'people'
 export default function App() {
   const [activeTab, setActiveTab] = useState<AppTab>('map')
   const [selectedPerson, setSelectedPerson] = useState<PersonLocation | null>(null)
+  const [mapFocusPosition, setMapFocusPosition] = useState<
+    [number, number] | null
+  >(null)
+
+  function handleViewOnMap(person: PersonLocation) {
+    setMapFocusPosition(person.position)
+    setSelectedPerson(null)
+    setActiveTab('map')
+  }
 
   return (
     <main className="app-shell">
       {activeTab === 'map' ? (
         <>
-          <MapView />
+          <MapView focusPosition={mapFocusPosition} />
           <PeopleSheet people={mockPeople} />
         </>
       ) : selectedPerson ? (
         <PersonDetailPage
           person={selectedPerson}
           onBack={() => setSelectedPerson(null)}
-          onViewOnMap={() => undefined}
+          onViewOnMap={handleViewOnMap}
         />
       ) : (
         <PeoplePage people={mockPeople} onSelectPerson={setSelectedPerson} />
