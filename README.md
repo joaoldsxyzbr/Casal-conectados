@@ -19,7 +19,8 @@ A versão atual é exclusivamente visual e usa dados simulados. O objetivo desta
 - navegação inferior com `Mapa` e `Pessoas`;
 - layout mobile-first com suporte a safe areas de Android/iOS;
 - fallback visual se os tiles do mapa falharem;
-- CI com testes, TypeScript, build e auditoria de dependências.
+- CI com testes, TypeScript, build e auditoria de dependências;
+- configuração de deploy via Cloudflare Workers Static Assets.
 
 ### Deliberadamente fora da v0.1
 
@@ -43,6 +44,7 @@ A versão atual é exclusivamente visual e usa dados simulados. O objetivo desta
 - Lucide React
 - Vitest
 - Testing Library
+- Cloudflare Workers Static Assets / Wrangler
 
 ## Desenvolvimento
 
@@ -59,6 +61,25 @@ npm run typecheck
 npm run build
 npm audit --audit-level=high
 ```
+
+## Deploy no Cloudflare
+
+O deploy usa `wrangler.jsonc` como fonte de verdade e publica os arquivos gerados em `./dist`.
+
+Para Cloudflare Workers Builds:
+
+- Production branch: `main`
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy`
+- Root directory: raiz do repositório
+
+Também é possível reproduzir localmente com:
+
+```bash
+npm run deploy
+```
+
+O código da aplicação precisa estar presente na branch de produção antes do deploy.
 
 ## Estrutura principal
 
