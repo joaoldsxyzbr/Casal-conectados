@@ -64,12 +64,12 @@ npm audit --audit-level=high
 
 ## Deploy no Cloudflare
 
-O deploy usa `wrangler.jsonc` como fonte de verdade e publica os arquivos gerados em `./dist`.
+O `wrangler.jsonc` é a fonte de verdade do deploy. Ele executa `npm run build` automaticamente e publica os arquivos gerados em `./dist`.
 
 Para Cloudflare Workers Builds:
 
 - Production branch: `main`
-- Build command: `npm run build`
+- Build command: pode ficar vazio
 - Deploy command: `npx wrangler deploy`
 - Root directory: raiz do repositório
 
