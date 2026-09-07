@@ -55,6 +55,7 @@
 
 .people-page__card {
   display: grid;
+  width: 100%;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 12px;
@@ -64,6 +65,15 @@
   border-radius: 22px;
   background: rgb(255 255 255 / 94%);
   box-shadow: 0 10px 26px rgb(49 38 67 / 10%);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.people-page__card:focus-visible {
+  outline: 3px solid rgb(111 79 216 / 32%);
+  outline-offset: 2px;
 }
 
 .people-page__avatar {
