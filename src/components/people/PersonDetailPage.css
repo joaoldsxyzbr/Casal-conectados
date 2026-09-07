@@ -90,6 +90,71 @@
   font-weight: 800;
 }
 
+.person-detail__location {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid rgb(255 255 255 / 78%);
+  border-radius: 20px;
+  background: rgb(255 255 255 / 86%);
+  color: #6745d1;
+}
+
+.person-detail__location div {
+  display: grid;
+  gap: 3px;
+}
+
+.person-detail__location small {
+  color: #756c80;
+  font-size: 0.7rem;
+}
+
+.person-detail__location strong {
+  color: #241f2e;
+  font-size: 0.92rem;
+}
+
+.person-detail__actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.person-detail__actions button {
+  display: grid;
+  min-height: 78px;
+  place-items: center;
+  gap: 7px;
+  padding: 10px 6px;
+  border: 1px solid rgb(255 255 255 / 82%);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 8px 22px rgb(49 38 67 / 8%);
+  color: #6745d1;
+  cursor: pointer;
+  font: inherit;
+}
+
+.person-detail__actions button span {
+  color: #51485f;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.person-detail__feedback {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #eee8ff;
+  color: #5d3fc2;
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
 @media (max-width: 360px) {
   .person-detail__hero {
     gap: 14px;
@@ -99,5 +164,9 @@
   .person-detail__avatar {
     width: 70px;
     height: 70px;
+  }
+
+  .person-detail__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
