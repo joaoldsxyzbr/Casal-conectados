@@ -12,7 +12,7 @@ export function PeoplePage({ people }: PeoplePageProps) {
         <div className="people-page__intro">
           <p>Seu círculo</p>
           <h2 id="people-page-title">Pessoas</h2>
-          <span>2 pessoas conectadas</span>
+          <span>{people.length} pessoas conectadas</span>
         </div>
 
         <ul className="people-page__list">
