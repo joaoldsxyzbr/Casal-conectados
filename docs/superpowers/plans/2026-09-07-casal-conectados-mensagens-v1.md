@@ -62,7 +62,7 @@
 - `src/components/people/PersonDetailPage.tsx`
 - `src/data/people.ts`
 - `src/types/person.ts`
-- `src/components/header/AppHeader.tsx` se não houver mais consumidor após a nova Home.
+- `src/components/header/AppHeader.tsx`
 
 ---
 
@@ -79,7 +79,7 @@
 
 - [ ] **Step 1: Escrever testes RED do storage**
 
-Criar casos equivalentes a:
+Criar `src/storage/messageStorage.test.ts` com:
 
 ```ts
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -146,7 +146,7 @@ Expected: FAIL porque `messageStorage.ts` e `LocalMessage` ainda não existem.
 
 - [ ] **Step 3: Implementar contrato mínimo**
 
-`src/types/message.ts` deve exportar exatamente:
+Criar `src/types/message.ts`:
 
 ```ts
 export type MessageType = 'quick' | 'text'
@@ -163,7 +163,7 @@ export type LocalMessage = {
 }
 ```
 
-`src/storage/messageStorage.ts` deve usar a chave `casal-conectados:messages:v1`, validar cada campo antes de aceitar dados recuperados e envolver `getItem`, `setItem` e `removeItem` em `try/catch`.
+Criar `src/storage/messageStorage.ts` com a chave `casal-conectados:messages:v1`, validação de todos os campos e `try/catch` em `getItem`, `setItem` e `removeItem`.
 
 Assinaturas:
 
@@ -175,7 +175,13 @@ export function appendMessage(messages: LocalMessage[], message: LocalMessage): 
 export function clearMessages(): boolean
 ```
 
-`appendMessage` deve sempre retornar `const next = [...messages, message]`, chamando `saveMessages(next)` sem depender do sucesso da persistência.
+`appendMessage` deve executar:
+
+```ts
+const next = [...messages, message]
+saveMessages(next)
+return next
+```
 
 - [ ] **Step 4: Rodar teste do storage**
 
@@ -211,11 +217,11 @@ git commit -m "feat: add local message storage"
 **Interfaces:**
 - Produces: `type AppTab = 'home' | 'chat' | 'us'`.
 - `BottomNav` recebe `activeTab: AppTab` e `onTabChange: (tab: AppTab) => void`.
-- Páginas iniciais expõem headings `Início`, `Chat` e `Nós` para permitir navegação testável antes de implementar seus detalhes.
+- As páginas iniciais expõem headings `Início`, `Chat` e `Nós`.
 
-- [ ] **Step 1: Substituir testes de mapa por testes RED do novo shell**
+- [ ] **Step 1: Substituir testes de mapa por teste RED do novo shell**
 
-`src/App.test.tsx` deve começar verificando:
+`src/App.test.tsx` deve conter:
 
 ```tsx
 it('inicia em Início e navega entre as três abas', () => {
@@ -246,7 +252,7 @@ Expected: FAIL porque ainda existem as abas `Mapa` e `Pessoas`.
 
 - [ ] **Step 3: Implementar shell mínimo**
 
-`App.tsx` deve manter somente:
+`App.tsx` deve ter:
 
 ```tsx
 const [activeTab, setActiveTab] = useState<AppTab>('home')
@@ -263,7 +269,9 @@ return (
 )
 ```
 
-`BottomNav.tsx` deve usar ícones Lucide equivalentes a `Home`, `MessageCircle` e `Heart`, três colunas e `aria-current="page"` apenas na aba ativa.
+Criar páginas mínimas com `<h1>Início</h1>`, `<h1>Chat</h1>` e `<h1>Nós</h1>`.
+
+`BottomNav.tsx` deve usar `Home`, `MessageCircle` e `Heart` do Lucide React, três colunas e `aria-current="page"` apenas na aba ativa.
 
 - [ ] **Step 4: Rodar testes e typecheck**
 
@@ -295,18 +303,28 @@ git commit -m "feat: replace map navigation with couple tabs"
 
 **Interfaces:**
 - `HomePage` consumes: `onAddMessage(type: MessageType, content: string): void`.
-- `App` owns `messages: LocalMessage[]`, initialized once with `loadMessages()`.
+- `App` owns `messages: LocalMessage[]`, initialized uma vez com `loadMessages()`.
 - IDs são gerados com `crypto.randomUUID()`; timestamps com `new Date().toISOString()`.
 
 - [ ] **Step 1: Escrever testes RED da Home**
 
-Cobrir exatamente os seis atalhos, envio de texto, bloqueio de whitespace e feedback local:
+`src/components/home/HomePage.test.tsx` deve cobrir os seis atalhos, envio de texto, bloqueio de whitespace e feedback local:
 
 ```tsx
 const onAddMessage = vi.fn()
 render(<HomePage onAddMessage={onAddMessage} />)
 
-expect(screen.getByRole('button', { name: 'Te amo ❤️' })).toBeInTheDocument()
+for (const label of [
+  'Bom dia ❤️',
+  'Tô com saudade 🥰',
+  'Te amo ❤️',
+  'Cheguei 🏠',
+  'Flor do dia 🌷',
+  'Pensando em você 💭',
+]) {
+  expect(screen.getByRole('button', { name: label })).toBeInTheDocument()
+}
+
 fireEvent.click(screen.getByRole('button', { name: 'Te amo ❤️' }))
 expect(onAddMessage).toHaveBeenCalledWith('quick', 'Te amo ❤️')
 expect(screen.getByRole('status')).toHaveTextContent('Recado adicionado ❤️')
@@ -319,17 +337,25 @@ expect(onAddMessage).toHaveBeenCalledWith('text', 'Boa noite, amor')
 expect(screen.getByLabelText('Mensagem curta')).toHaveValue('')
 ```
 
-Adicionar caso separado com valor `'   '` e garantir que `onAddMessage` não é chamado.
+Adicionar um segundo teste:
+
+```tsx
+fireEvent.change(screen.getByLabelText('Mensagem curta'), {
+  target: { value: '   ' },
+})
+fireEvent.click(screen.getByRole('button', { name: 'Adicionar mensagem' }))
+expect(onAddMessage).not.toHaveBeenCalled()
+```
 
 - [ ] **Step 2: Executar e confirmar RED**
 
 Run: `npm test -- --run src/components/home/HomePage.test.tsx`
 
-Expected: FAIL porque a Home ainda é placeholder.
+Expected: FAIL porque a Home ainda é mínima.
 
 - [ ] **Step 3: Implementar Home**
 
-Usar constante local imutável:
+Usar:
 
 ```ts
 const QUICK_MESSAGES = [
@@ -342,7 +368,7 @@ const QUICK_MESSAGES = [
 ] as const
 ```
 
-O formulário deve usar `trim()` para validar e enviar o texto limpo. O feedback usa `role="status"` e copy `Recado adicionado ❤️`.
+O formulário usa `trim()` antes de chamar `onAddMessage`. Após envio válido, limpa o campo e mostra `Recado adicionado ❤️` em `role="status"`.
 
 - [ ] **Step 4: Integrar histórico no App**
 
@@ -373,12 +399,25 @@ Passar `onAddMessage={handleAddMessage}` para `HomePage`.
 
 - [ ] **Step 5: Adicionar teste de integração de persistência em App**
 
-Após clicar `Te amo ❤️`, trocar para Chat em um stub temporário ou verificar `localStorage` diretamente:
+Em `src/App.test.tsx`:
 
 ```tsx
-expect(JSON.parse(localStorage.getItem(MESSAGE_STORAGE_KEY) ?? '[]')).toEqual(
-  expect.arrayContaining([expect.objectContaining({ type: 'quick', content: 'Te amo ❤️' })]),
-)
+beforeEach(() => localStorage.clear())
+
+it('persiste um recado rápido criado na Home', () => {
+  render(<App />)
+  fireEvent.click(screen.getByRole('button', { name: 'Te amo ❤️' }))
+
+  const stored = JSON.parse(localStorage.getItem(MESSAGE_STORAGE_KEY) ?? '[]')
+  expect(stored).toEqual([
+    expect.objectContaining({
+      type: 'quick',
+      content: 'Te amo ❤️',
+      sender: 'joao',
+      status: 'saved-local',
+    }),
+  ])
+})
 ```
 
 - [ ] **Step 6: Rodar testes da Home, App e storage**
@@ -415,7 +454,7 @@ git commit -m "feat: add quick notes home"
 
 - [ ] **Step 1: Escrever testes RED do Chat**
 
-Casos mínimos:
+`src/components/chat/ChatPage.test.tsx` deve conter:
 
 ```tsx
 it('mostra estado vazio', () => {
@@ -438,19 +477,24 @@ it('mostra quick e text do mais antigo para o mais recente', () => {
   expect(items[0]).toHaveTextContent('Antes ❤️')
   expect(items[1]).toHaveTextContent('Depois')
 })
-```
 
-Adicionar teste de `Limpar histórico` chamando `onClear`.
+it('solicita limpeza do histórico', () => {
+  const onClear = vi.fn()
+  render(<ChatPage messages={[]} onClear={onClear} />)
+  fireEvent.click(screen.getByRole('button', { name: 'Limpar histórico' }))
+  expect(onClear).toHaveBeenCalledTimes(1)
+})
+```
 
 - [ ] **Step 2: Executar e confirmar RED**
 
 Run: `npm test -- --run src/components/chat/ChatPage.test.tsx`
 
-Expected: FAIL porque o Chat ainda é placeholder.
+Expected: FAIL porque o Chat ainda é mínimo.
 
 - [ ] **Step 3: Implementar Chat**
 
-Copiar antes de ordenar:
+Ordenação:
 
 ```ts
 const orderedMessages = [...messages].sort((a, b) =>
@@ -458,7 +502,16 @@ const orderedMessages = [...messages].sort((a, b) =>
 )
 ```
 
-Cada item deve expor `data-testid="chat-message"`, conteúdo e hora local formatada com `Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' })`. Diferenciar `quick` e `text` por classe/label discreta, sem simular status de entrega/leitura.
+Cada item deve expor `data-testid="chat-message"`, conteúdo e hora formatada com:
+
+```ts
+new Intl.DateTimeFormat('pt-BR', {
+  hour: '2-digit',
+  minute: '2-digit',
+}).format(new Date(message.createdAt))
+```
+
+Diferenciar `quick` e `text` somente por classe e rótulo discreto; não exibir status de entrega/leitura.
 
 - [ ] **Step 4: Integrar limpeza no App**
 
@@ -469,19 +522,31 @@ function handleClearMessages() {
 }
 ```
 
-Passar `messages={messages}` e `onClear={handleClearMessages}`.
+Passar `messages={messages}` e `onClear={handleClearMessages}` para `ChatPage`.
 
-- [ ] **Step 5: Adicionar integração Home -> Chat -> persistência**
+- [ ] **Step 5: Adicionar teste de integração Home -> Chat -> reload local -> limpeza**
 
-No `App.test.tsx`:
+Em `src/App.test.tsx`:
 
-1. limpar `localStorage` no `beforeEach`;
-2. clicar `Flor do dia 🌷`;
-3. abrir `Chat`;
-4. esperar `Flor do dia 🌷` no histórico;
-5. desmontar e montar `<App />` novamente;
-6. abrir `Chat` e confirmar que o item reaparece;
-7. clicar `Limpar histórico` e confirmar estado vazio + storage limpo.
+```tsx
+it('mantém o histórico local entre montagens e permite limpar', () => {
+  const first = render(<App />)
+
+  fireEvent.click(screen.getByRole('button', { name: 'Flor do dia 🌷' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Chat' }))
+  expect(screen.getByText('Flor do dia 🌷')).toBeInTheDocument()
+
+  first.unmount()
+
+  render(<App />)
+  fireEvent.click(screen.getByRole('button', { name: 'Chat' }))
+  expect(screen.getByText('Flor do dia 🌷')).toBeInTheDocument()
+
+  fireEvent.click(screen.getByRole('button', { name: 'Limpar histórico' }))
+  expect(screen.getByText('Nenhum recado ainda')).toBeInTheDocument()
+  expect(localStorage.getItem(MESSAGE_STORAGE_KEY)).toBeNull()
+})
+```
 
 - [ ] **Step 6: Rodar testes relevantes**
 
@@ -514,9 +579,11 @@ git commit -m "feat: add local couple chat history"
 **Interfaces:**
 - Produces: `RELATIONSHIP_START = '2022-09-16'`.
 - Produces: `getDaysTogether(now: Date): number`.
-- `UsPage` aceita `now?: Date` apenas para teste; padrão `new Date()`.
+- `UsPage` aceita `now?: Date` para teste; padrão `new Date()`.
 
 - [ ] **Step 1: Escrever testes RED do contador**
+
+Criar `src/utils/relationshipDuration.test.ts`:
 
 ```ts
 import { describe, expect, it } from 'vitest'
@@ -545,7 +612,7 @@ Expected: FAIL porque o util ainda não existe.
 
 - [ ] **Step 3: Implementar cálculo sem dependência externa**
 
-Normalizar ambas as datas para UTC usando apenas ano/mês/dia locais:
+Criar `src/utils/relationshipDuration.ts`:
 
 ```ts
 export const RELATIONSHIP_START = '2022-09-16'
@@ -560,6 +627,8 @@ export function getDaysTogether(now: Date): number {
 
 - [ ] **Step 4: Escrever teste RED da tela Nós**
 
+Criar `src/components/us/UsPage.test.tsx`:
+
 ```tsx
 render(<UsPage now={new Date(2022, 8, 17, 12)} />)
 expect(screen.getByRole('heading', { name: 'Nós' })).toBeInTheDocument()
@@ -568,11 +637,21 @@ expect(screen.getByText('Desde 16/09/2022')).toBeInTheDocument()
 expect(screen.getByText('1 dia juntos')).toBeInTheDocument()
 ```
 
-Adicionar pluralização para `0 dias juntos` e `2 dias juntos`.
+Adicionar dois casos explícitos:
+
+```tsx
+render(<UsPage now={new Date(2022, 8, 16, 12)} />)
+expect(screen.getByText('0 dias juntos')).toBeInTheDocument()
+```
+
+```tsx
+render(<UsPage now={new Date(2022, 8, 18, 12)} />)
+expect(screen.getByText('2 dias juntos')).toBeInTheDocument()
+```
 
 - [ ] **Step 5: Implementar `UsPage`**
 
-Mostrar apenas conteúdo aprovado nesta fase: `João + Amor`, `Desde 16/09/2022` e contador formatado com `Intl.NumberFormat('pt-BR')`. Não adicionar fotos, memórias ou novas funcionalidades.
+Mostrar somente `Nós`, `João + Amor`, `Desde 16/09/2022` e o contador formatado com `Intl.NumberFormat('pt-BR')`. Usar singular apenas quando o valor for `1`.
 
 - [ ] **Step 6: Rodar testes e typecheck**
 
@@ -607,16 +686,17 @@ git commit -m "feat: add couple summary screen"
 - A aplicação não deve importar nenhum símbolo de Leaflet, React Leaflet, `people.ts` ou `person.ts`.
 - `.bottom-nav` passa a ter três colunas.
 
-- [ ] **Step 1: Criar teste/checagem RED de ausência de mapa**
+- [ ] **Step 1: Adicionar verificação de ausência de mapa em App**
 
-Atualizar `src/App.test.tsx` para afirmar:
+Adicionar a `src/App.test.tsx`:
 
 ```tsx
-expect(screen.queryByText('Mapa')).not.toBeInTheDocument()
-expect(screen.queryByText('Pessoas')).not.toBeInTheDocument()
+it('não exibe a experiência antiga de localização', () => {
+  render(<App />)
+  expect(screen.queryByText('Mapa')).not.toBeInTheDocument()
+  expect(screen.queryByText('Pessoas')).not.toBeInTheDocument()
+})
 ```
-
-Antes da limpeza completa, executar a suíte para garantir que eventuais imports antigos ainda sejam detectados por build/typecheck.
 
 - [ ] **Step 2: Remover import de Leaflet de `src/main.tsx`**
 
@@ -634,35 +714,47 @@ Executar:
 npm uninstall leaflet react-leaflet @types/leaflet
 ```
 
-Confirmar que `package.json` não contém nenhum dos três pacotes e que o lockfile foi atualizado pelo npm.
+Confirmar que `package.json` não contém os três pacotes e que o lockfile foi atualizado pelo npm.
 
-- [ ] **Step 4: Excluir arquivos antigos sem consumidores**
+- [ ] **Step 4: Excluir arquivos antigos**
 
-Remover exatamente os arquivos de `src/components/map`, `src/components/people`, `src/data/people.ts`, `src/types/person.ts` e `src/components/header/AppHeader.tsx` se a busca por `AppHeader` retornar zero consumidores.
-
-Executar busca antes da remoção do header:
-
-```bash
-grep -R "AppHeader" -n src --exclude=AppHeader.tsx || true
-```
-
-Expected: sem resultados.
+Remover exatamente os arquivos listados em **Remover**. Após Task 2, `AppHeader` não possui consumidor e deve ser excluído junto com os fluxos de mapa/pessoas.
 
 - [ ] **Step 5: Reescrever `src/styles.css` para a nova composição**
 
-Manter os fundamentos globais e criar classes focadas em:
+Manter os fundamentos globais e implementar estas regras-base:
 
-- `.app-shell`: `min-height: 100dvh`, fundo limpo, conteúdo rolável;
-- `.app-content`: largura máxima de ~480px, padding superior e inferior que respeite `env(safe-area-inset-*)`;
-- `.quick-grid`: `display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));`;
-- `.quick-action`: alvo de toque com `min-height` confortável;
-- `.message-composer`: input + botão responsivos;
-- `.chat-list` e `.chat-message`: histórico legível;
-- `.us-card`: bloco central simples;
-- `.bottom-nav`: três colunas, largura mobile e safe area inferior;
-- `:focus-visible`: manter foco visível.
+```css
+.app-shell {
+  min-height: 100dvh;
+  background: #f5f2f7;
+}
 
-Não manter seletores `.map-*`, `.leaflet-*`, `.person-marker*`, `.people-sheet*` ou `.person-*` exclusivos da experiência antiga.
+.app-content {
+  width: min(100%, 480px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 24px) 16px calc(env(safe-area-inset-bottom) + 96px);
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quick-action {
+  min-height: 88px;
+}
+
+.bottom-nav {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+```
+
+Complementar com `.message-composer`, `.chat-list`, `.chat-message`, `.us-card`, estados ativos e `:focus-visible`, mantendo contraste legível e alvos de toque confortáveis.
+
+Eliminar todos os seletores `.map-*`, `.leaflet-*`, `.person-marker*`, `.people-sheet*` e `.person-*` exclusivos da experiência antiga.
 
 - [ ] **Step 6: Rodar busca de resíduos e gates técnicos**
 
@@ -699,7 +791,7 @@ git commit -m "refactor: remove location experience"
 
 - [ ] **Step 1: Atualizar README para o estado entregue**
 
-Registrar:
+Registrar explicitamente:
 
 - Home 2xN com seis recados rápidos;
 - mensagem curta personalizada;
@@ -708,7 +800,7 @@ Registrar:
 - tela Nós com data `16/09/2022` e contador;
 - navegação `Início · Chat · Nós`;
 - remoção de mapa/localização;
-- limites explícitos: sem backend, sincronização, push e entrega real.
+- limites: sem backend, sincronização, push e entrega real.
 
 - [ ] **Step 2: Rodar suíte completa em estado limpo**
 
@@ -731,7 +823,7 @@ Run:
 git diff main...HEAD -- src package.json package-lock.json README.md docs/superpowers
 ```
 
-Checklist de revisão:
+Checklist:
 
 - nenhum backend/D1/login/push foi introduzido;
 - nenhum mapa/localização permaneceu;
