@@ -71,7 +71,7 @@ Cada item do histórico deve conter:
 - `content`: texto exibido no histórico;
 - `sender`: remetente simulado da fase front;
 - `createdAt`: timestamp ISO;
-- `status`: estado local de envio.
+- `status`: estado local de persistência.
 
 Exemplo conceitual:
 
@@ -82,7 +82,7 @@ Exemplo conceitual:
   content: 'Te amo ❤️'
   sender: 'joao'
   createdAt: '2026-09-07T20:30:00.000Z'
-  status: 'sent'
+  status: 'saved-local'
 }
 ```
 
@@ -115,7 +115,7 @@ Ao tocar em um atalho:
 1. criar um item `quick`;
 2. salvar imediatamente no storage local;
 3. atualizar o estado em memória;
-4. exibir feedback curto, por exemplo `Enviado para Amor ❤️`;
+4. exibir feedback curto e explicitamente local, por exemplo `Recado adicionado ❤️`;
 5. disponibilizar o item imediatamente no Chat.
 
 Ao escrever uma mensagem:
@@ -124,7 +124,7 @@ Ao escrever uma mensagem:
 2. criar um item `text`;
 3. persistir localmente;
 4. limpar o campo após sucesso;
-5. mostrar o mesmo tipo de feedback curto.
+5. mostrar o mesmo tipo de feedback local.
 
 ## Tela Chat
 
@@ -136,7 +136,7 @@ Exibir um histórico cronológico único de atalhos e mensagens escritas.
 
 - carregar o histórico do storage ao iniciar a aplicação;
 - mostrar estado vazio quando não houver mensagens;
-- exibir todos os itens em ordem cronológica;
+- exibir todos os itens em ordem cronológica, do mais antigo para o mais recente;
 - diferenciar visualmente apenas o necessário entre toque rápido e texto;
 - manter a experiência simples, sem recursos avançados de mensageria nesta fase;
 - incluir opção de limpar histórico apenas por se tratar de protótipo local.
@@ -227,7 +227,7 @@ A remoção deve ser feita apenas quando a implementação começar e sempre aco
 
 ### Envio rápido
 
-`Home -> ação de envio -> serviço de histórico -> localStorage -> estado React -> feedback -> Chat`
+`Home -> ação de envio -> serviço de histórico -> localStorage -> estado React -> feedback local -> Chat`
 
 ### Inicialização
 
@@ -235,7 +235,7 @@ A remoção deve ser feita apenas quando a implementação começar e sempre aco
 
 ### Limpeza
 
-`Chat -> confirmar ação local -> serviço de histórico -> localStorage limpo -> estado React vazio`
+`Chat -> confirmação local -> serviço de histórico -> localStorage limpo -> estado React vazio`
 
 ## Tratamento de erros
 
@@ -247,14 +247,14 @@ Regras:
 - se o conteúdo salvo estiver corrompido ou com formato inesperado, ignorar o conteúdo inválido e iniciar histórico vazio;
 - nunca quebrar a renderização por falha de storage;
 - envio de texto vazio deve ser bloqueado na interface;
-- feedbacks devem ser locais, simples e não sugerir entrega real ao parceiro.
+- feedbacks devem ser locais e não podem sugerir entrega real ao parceiro.
 
 ## Acessibilidade
 
 - botões com rótulos claros;
 - navegação semântica;
 - `aria-current` para aba ativa;
-- feedback de envio exposto como status quando fizer sentido;
+- feedback local exposto como status quando fizer sentido;
 - foco visível;
 - alvos de toque adequados para mobile;
 - contraste legível.
@@ -273,20 +273,21 @@ Regras:
 - toque rápido cria item correto;
 - mensagem escrita cria item correto;
 - texto vazio não é enviado;
-- feedback aparece após envio.
+- feedback local aparece após a ação.
 
 ### Persistência
 
 - mensagens são gravadas no `localStorage`;
 - mensagens persistidas reaparecem após nova montagem da aplicação;
 - dados inválidos de storage não quebram a aplicação;
+- indisponibilidade de storage mantém o app funcional em memória durante a sessão;
 - limpeza remove o histórico.
 
 ### Chat
 
 - começa vazio sem dados prévios;
 - mostra atalhos e textos no mesmo histórico;
-- respeita ordem cronológica.
+- respeita ordem cronológica do mais antigo para o mais recente.
 
 ### Nós
 
@@ -325,10 +326,10 @@ A fase será considerada pronta quando:
 
 1. o mapa e os fluxos de localização não fizerem mais parte da interface;
 2. a Home minimalista 2xN estiver funcional;
-3. os seis atalhos enviarem itens locais;
-4. mensagens curtas puderem ser enviadas;
+3. os seis atalhos criarem itens locais;
+4. mensagens curtas puderem ser adicionadas ao histórico local;
 5. o Chat exibir o histórico unificado;
-6. o histórico persistir após fechar e reabrir o app no mesmo navegador;
+6. o histórico persistir após fechar e reabrir o app no mesmo navegador, quando `localStorage` estiver disponível;
 7. a tela Nós mostrar o casal e o contador desde 16/09/2022;
 8. a navegação `Início · Chat · Nós` estiver funcional e acessível;
 9. dependências de mapa forem removidas;
